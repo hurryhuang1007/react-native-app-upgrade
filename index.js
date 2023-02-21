@@ -106,12 +106,12 @@ export const downloadApk = async ({
         .config({ path: apkFilePath })
         .fetch('GET', apkUrl)
         .progress({ interval }, (received, total) => {
-            callback?.onProgress(getFilesize(received), getFilesize(total), parseInt((received / total * 100)));
+            callback?.onProgress?.(getFilesize(received), getFilesize(total), parseInt((received / total * 100)));
         })
         .catch((errorMessage, statusCode) => {
-          callback?.onFailure(errorMessage, statusCode);
+          callback?.onFailure?.(errorMessage, statusCode);
         });
-    callback?.onComplete();
+    callback?.onComplete?.();
     if (downloadInstall) {
         const apkFileExist = await checkApkFileExist(apkFilePath);
         apkFileExist && RNUpgrade.installApk(apkFilePath);
